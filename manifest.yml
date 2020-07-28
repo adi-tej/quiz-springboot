@@ -1,0 +1,8 @@
+---
+applications:
+- name: gs-rest-demo.service
+  memory: 256M
+  instances: 1
+  host: rest-demo.service
+  domain: guides.spring.io
+  path: build/libs/gs-rest-demo.service-0.1.0.jar

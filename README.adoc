@@ -1,0 +1,29 @@
+It's based on spring boot and maven.
+When you run the current application and input http://localhost:8080/greeting, it will return {"id":1,"content":"Hello, World!"}
+
+Please implement the below REST API:
+
+Usage: to find the total numbers of the users with the name searched
+
+URL: http://localhost:8080/user
+
+Body: {"name": "Tom"}
+
+  Tom is example, you could use the name like John, emily and so on.
+
+Method: POST
+
+Return: {name": "Tom", "TotalNumbers": ??}
+  
+  name should be what you got by Body
+  
+  ?? should be the actual numbers of users whose name is what you are searching
+
+It should be finished based on the current framework.
+
+You should think it's a real requirement so you could consider all the cases that would happen.
+
+You need to finish it using the current framework
+Controller -> UserService -> dao (having been finished)
+
+You need to login with your own github account(if you don't have please create one) and then fork a branch from the master branch of mine. After you finish you could commit a pull request to master branch of mine.
