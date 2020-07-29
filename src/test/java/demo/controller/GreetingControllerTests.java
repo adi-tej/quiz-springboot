@@ -16,6 +16,7 @@
 package demo.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -25,30 +26,79 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import demo.entity.User;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class GreetingControllerTests {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Test
-    public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
+	@Test
+	public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
 
-        this.mockMvc.perform(get("/greeting")).andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$.content").value("Hello, World!"));
-    }
+		this.mockMvc.perform(get("/greeting")).andDo(print()).andExpect(status().isOk())
+				.andExpect(jsonPath("$.content").value("Hello, World!"));
+	}
 
-    @Test
-    public void paramGreetingShouldReturnTailoredMessage() throws Exception {
+	@Test
+	public void paramGreetingShouldReturnTailoredMessage() throws Exception {
 
-        this.mockMvc.perform(get("/greeting").param("name", "Spring Community"))
-                .andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$.content").value("Hello, Spring Community!"));
-    }
+		this.mockMvc.perform(get("/greeting").param("name", "Spring Community")).andDo(print())
+				.andExpect(status().isOk()).andExpect(jsonPath("$.content").value("Hello, Spring Community!"));
+	}
+
+	@Test
+	/**
+	 * Test with param Tom
+	 * totalNumbers should be number, and name should be Tom
+	 * @throws Exception
+	 */
+	public void paramTomShouldReturnTotalNumber() throws Exception {
+		this.mockMvc.perform(post("/user").content(asJsonString(new User(0, "Tom"))).contentType(MediaType.APPLICATION_JSON)
+			      .accept(MediaType.APPLICATION_JSON)).andDo(print())
+				.andExpect(status().isOk()).andExpect(jsonPath("$.totalNumbers").isNumber()).andExpect(jsonPath("$.name").value("Tom"));
+
+	}
+	
+	@Test
+	/**
+	 * Test with param John
+	 * totalNumbers should be number, and name should be John
+	 * @throws Exception
+	 */
+	public void paramJohnShouldReturnTotalNumber() throws Exception {
+		this.mockMvc.perform(post("/user").content(asJsonString(new User(0, "John"))).contentType(MediaType.APPLICATION_JSON)
+			      .accept(MediaType.APPLICATION_JSON)).andDo(print())
+				.andExpect(status().isOk()).andExpect(jsonPath("$.totalNumbers").isNumber()).andExpect(jsonPath("$.name").value("John"));
+	}
+	
+	@Test
+	/**
+	 * Test with param emily
+	 * totalNumbers should be zero, and name should be emily
+	 * @throws Exception
+	 */
+	public void paramEmilyShouldReturnZero() throws Exception {
+		this.mockMvc.perform(post("/user").content(asJsonString(new User(0, "emily"))).contentType(MediaType.APPLICATION_JSON)
+			      .accept(MediaType.APPLICATION_JSON)).andDo(print())
+				.andExpect(status().isOk()).andExpect(jsonPath("$.totalNumbers").value(0)).andExpect(jsonPath("$.name").value("emily"));
+	}
+	
+	public static String asJsonString(final Object obj) {
+	    try {
+	        return new ObjectMapper().writeValueAsString(obj);
+	    } catch (Exception e) {
+	        throw new RuntimeException(e);
+	    }
+	}
 
 }
