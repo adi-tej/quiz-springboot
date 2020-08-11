@@ -92,6 +92,20 @@ public class GreetingControllerTests {
 			      .accept(MediaType.APPLICATION_JSON)).andDo(print())
 				.andExpect(status().isOk()).andExpect(jsonPath("$.totalNumbers").value(0)).andExpect(jsonPath("$.name").value("emily"));
 	}
+
+	@Test
+	/**
+	 * Test without name
+	 * totalNumbers should be zero
+	 * @throws Exception
+	 */
+	public void noParamShouldReturnUserNotFound() throws Exception {
+		this.mockMvc.perform(post("/user").content(asJsonString(new User(0, ""))).contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)).andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.totalNumbers").value(0))
+				.andExpect(jsonPath("$.name").value("Missing User Information"));
+	}
 	
 	public static String asJsonString(final Object obj) {
 	    try {
