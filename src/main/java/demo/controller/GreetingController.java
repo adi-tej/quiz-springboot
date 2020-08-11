@@ -33,11 +33,11 @@ public class GreetingController {
     }
     
     @RequestMapping(path= "/user", method = RequestMethod.POST)
-    public UserTotalNumbers seachUser(@RequestBody User user) {
+    public UserTotalNumbers searchUser(@RequestBody User user) {
         //if the param doesn't exit
-        if (user.getName() == null) {
+        if (user.getName() == null || user.getName().equals("")) {
             logger.warn("Missing User Information");
-            return new UserTotalNumbers("User not found", 0);
+            return new UserTotalNumbers("Missing User Information", 0);
         }
 
         int totalNumbers = userService.getTotalNumbersForName(user.getName());
