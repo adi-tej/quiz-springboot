@@ -22,6 +22,7 @@ Return: {name": "Tom", "TotalNumbers": ??}
 It should be finished based on the current framework.
 
 You should think it's a real requirement so you could consider all the cases that would happen.
+Error/Exception handling, comments, tests all coding standards need to be followed.
 
 You need to finish it using the current framework
 Controller -> UserService -> dao (having been finished)
